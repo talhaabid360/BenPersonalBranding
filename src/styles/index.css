@@ -1697,11 +1697,18 @@ a:focus-visible {
     }
  }
 
-  .press-marquee figure {
+  /* .press-marquee figure {
     flex-basis: 230px;
     height: 150px;
     padding: 36px;
-  }
+  } */
+
+  .press-marquee figure {
+  flex: 0 0 230px;
+  height: 150px;
+  padding: 36px;
+  box-sizing: border-box;
+}
 
   .timeline-section {
     padding-bottom: 20px;
