@@ -1663,7 +1663,7 @@ a:focus-visible {
   }
 
   .press-marquee__track {
-  animation: mobile-logo-marquee 20s linear infinite;
+  animation: mobile-logo-marquee 65s linear infinite;
   will-change: transform;
   }
 
