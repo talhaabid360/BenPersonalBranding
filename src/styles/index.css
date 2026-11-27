@@ -1051,7 +1051,8 @@ a:focus-visible {
   line-height: 0.8;
   text-transform: uppercase;
   transform: translateX(-50%);
-  -webkit-text-stroke: 1px rgba(232, 189, 61, 0.62);
+  /* -webkit-text-stroke: 1px rgba(232, 189, 61, 0.62); */
+  -webkit-text-stroke: 1.5px #ffffff;
 }
 
 .watch-visual__play {
