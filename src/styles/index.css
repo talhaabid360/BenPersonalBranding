@@ -638,17 +638,17 @@ a:focus-visible {
 }
 
 .press-marquee figure {
-  display: grid;
-  flex: 0 0 clamp(230px, 23vw, 390px);
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
   height: clamp(120px, 11vw, 170px);
   margin: 0;
-  padding: clamp(18px, 2vw, 28px);
-  border-right: 1px solid var(--line-dark);
-  place-items: center;
+  padding: 0 45px;
+  border: 0;
 }
 
-.press-marquee img { width: 80%; height: clamp(64px, 6vw, 92px); object-fit: contain; object-position: center; filter: none; opacity: 1; }
-.press-marquee img[src*="fox-news"] { transform: scale(1.06); } .press-marquee img[src*="fox19"] { transform: scale(0.78); } .press-marquee img[src*="cbs"] { transform: scale(0.82); }
+.press-marquee img { display: block; width: auto; height: 75px; max-width: 220px; object-fit: contain; object-position: center; filter: none; opacity: 1; }
 
 @keyframes logo-marquee {
   to {
