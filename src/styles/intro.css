@@ -122,7 +122,7 @@
 }
 
 .signature-intro__tagline {
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
   font-family: var(--body);
   font-size: 0.68rem;
   font-weight: 700;
