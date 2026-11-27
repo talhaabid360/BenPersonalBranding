@@ -622,6 +622,7 @@ a:focus-visible {
 
 .press-marquee__track {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   width: max-content;
   gap: 0;
@@ -631,6 +632,7 @@ a:focus-visible {
 
 .press-marquee__group {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   flex: 0 0 auto;
   width: max-content;
@@ -651,8 +653,12 @@ a:focus-visible {
 .press-marquee img { display: block; width: auto; height: 75px; max-width: 220px; object-fit: contain; object-position: center; filter: none; opacity: 1; }
 
 @keyframes logo-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
   to {
-    transform: translateX(-25%);
+    transform: translate3d(-25%, 0, 0);
   }
 }
 
@@ -1685,17 +1691,15 @@ a:focus-visible {
 }
 
   .press-marquee img {
-  position: relative;
-  z-index: 2;
-  display: block !important;
-  width: 150px !important;
-  height: 72px !important;
-  max-width: none;
+  display: block;
+  width: auto;
+  height: 58px;
+  max-width: 150px;
   object-fit: contain;
-  visibility: visible !important;
-  filter: none !important;
-  opacity: 1 !important;
-  }
+  object-position: center;
+  filter: none;
+  opacity: 1;
+}
 
   /* .press-marquee figure {
     flex-basis: 230px;
