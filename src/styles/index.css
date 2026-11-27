@@ -4,7 +4,8 @@
 :root {
   --ink: #050505;
   --carbon: #0b0b0b;
-  --paper: #f4f1e8;
+  /* --paper: #f4f1e8; */
+  --paper: #ffffff;
   --white: #ffffff;
   --gold: #f3d66b;
   --gold-deep: #a87308;
