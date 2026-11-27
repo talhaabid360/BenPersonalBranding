@@ -664,7 +664,7 @@ a:focus-visible {
 
 .timeline-section {
   padding: var(--section-space) 0;
-  background: var(--carbon);
+  background: var(--ink);
 }
 
 .timeline-heading {
