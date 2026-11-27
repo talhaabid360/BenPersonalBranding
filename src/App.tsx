@@ -1,5 +1,5 @@
 import { ArrowUpRight, Menu, X } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -12,6 +12,7 @@ import PortraitBreak from "./components/sections/PortraitBreak";
 import Work from "./components/sections/Work";
 import Watch from "./components/sections/Watch";
 import Footer from "./components/layout/Footer";
+import IntroLoader from "./components/layout/IntroLoader";
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -22,46 +23,19 @@ function App() {
   const progressRef = useRef<HTMLDivElement>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [introComplete, setIntroComplete] = useState(false);
-  const introRef = useRef<HTMLDivElement>(null);
+  const [introComplete, setIntroComplete] = useState(
+    () =>
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches,
+  );
 
-  const [introSize, setIntroSize] = useState(() => ({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }));
+  const finishIntro = useCallback(() => {
+    setIntroComplete(true);
+  }, []);
   const [heroVideoReady, setHeroVideoReady] = useState(false);
   const [headerSolid, setHeaderSolid] = useState(false);
 
-
-  useEffect(() => {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const timer = window.setTimeout(
-      () => setIntroComplete(true),
-      reduceMotion ? 60 : 2600,
-    );
-    return () => window.clearTimeout(timer);
-  }, []);
-
-useLayoutEffect(() => {
-  const element = introRef.current;
-  if (!element) return;
-
-  const updateSize = () => {
-    setIntroSize({
-      width: element.clientWidth,
-      height: element.clientHeight,
-    });
-  };
-
-  updateSize();
-
-  const observer = new ResizeObserver(updateSize);
-  observer.observe(element);
-
-  return () => observer.disconnect();
-}, []);
   
 
   useEffect(() => {
@@ -110,25 +84,6 @@ useLayoutEffect(() => {
     if (reduceMotion) return;
 
     const context = gsap.context(() => {
-      gsap
-        .timeline({ delay: 0.85, defaults: { ease: "power4.out" } })
-        .fromTo(
-          ".hero-name__main",
-          { yPercent: 110, rotate: 1.5 },
-          { yPercent: 0, rotate: 0, duration: 1.25 },
-        )
-        .fromTo(
-          ".hero-name__echo",
-          { xPercent: -12, opacity: 0 },
-          { xPercent: 0, opacity: 0.26, duration: 1.1 },
-          "-=0.8",
-        )
-        .fromTo(
-          ".hero-kicker, .hero-scroll-cue",
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, stagger: 0.08 },
-          "-=0.65",
-        );
 
       gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
         gsap.fromTo(
@@ -254,130 +209,15 @@ useLayoutEffect(() => {
       context.revert();
     };
   }, []);
-
   const closeMenu = () => setMenuOpen(false);
-  const { width: introW, height: introH } = introSize;
-
-const introMobile = introW <= 640;
-
-const signatureWidth = Math.min(
-  introW * (introMobile ? 0.70 : 0.42),
-  410,
-);
-
-const signatureHeight = signatureWidth * 0.34;
-
-const signatureCenterY = introH * 0.49;
-
-const signatureX = (introW - signatureWidth) / 2;
-
-const signatureY =
-  signatureCenterY - signatureHeight / 2;
-
-const signatureOrigin = `${introW / 2}px ${signatureCenterY}px`;
 
   return (
-    <div ref={rootRef} className="site-shell">
+    <div ref={rootRef} className={`site-shell ${introComplete ? "site-shell--intro-ready" : "site-shell--intro-pending"}`}>
       <div className="page-progress" ref={progressRef} aria-hidden="true" />
 
-<div
-  ref={introRef}
-  className={`intro-loader ${
-    introComplete ? "intro-loader--complete" : ""
-  }`}
-  aria-hidden="true"
->
-  <svg
-    className="intro-fly__layer"
-    viewBox={`0 0 ${introW} ${introH}`}
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <defs>
-      <filter
-        id="intro-signature-filter"
-        colorInterpolationFilters="sRGB"
-      >
-        <feColorMatrix
-          type="matrix"
-          values="
-            -1.5 0 0 0 1
-            -1.5 0 0 0 1
-            -1.5 0 0 0 1
-             0   0 0 1 0
-          "
-        />
-      </filter>
-
-      <mask
-        id="intro-signature-mask"
-        maskUnits="userSpaceOnUse"
-        x="0"
-        y="0"
-        width={introW}
-        height={introH}
-        style={{ maskType: "luminance" }}
-      >
-        <rect
-          width={introW}
-          height={introH}
-          fill="white"
-        />
-
-        <g
-          className="intro-fly__cut"
-          style={{ transformOrigin: signatureOrigin }}
-        >
-          <image
-            href="/media/ben-swann-signature.webp"
-            x={signatureX}
-            y={signatureY}
-            width={signatureWidth}
-            height={signatureHeight}
-            filter="url(#intro-signature-filter)"
-            preserveAspectRatio="xMidYMid meet"
-          />
-        </g>
-      </mask>
-    </defs>
-
-    <rect
-      className="intro-fly__matte"
-      width={introW}
-      height={introH}
-      fill="#000000"
-      mask="url(#intro-signature-mask)"
-    />
-
-    <g
-      className="intro-fly__signature"
-      style={{ transformOrigin: signatureOrigin }}
-    >
-      <image
-        href="/media/ben-swann-signature.webp"
-        x={signatureX}
-        y={signatureY}
-        width={signatureWidth}
-        height={signatureHeight}
-        preserveAspectRatio="xMidYMid meet"
-      />
-    </g>
-  </svg>
-
-  <div
-    className="intro-fly__details"
-    style={{
-      top: signatureY + signatureHeight + 20,
-    }}
-  >
-    <div className="intro-fly__progress">
-      <span />
-    </div>
-
-    <span className="intro-fly__tagline">
-      Journalist · Broadcaster · Founder
-    </span>
-  </div>
-</div>
+    {!introComplete && (
+      <IntroLoader onComplete={finishIntro} />
+    )}
 
       <header className={`site-header ${headerSolid ? "site-header--solid" : ""}`}>
         <a className="site-brand" href="#home" aria-label="Ben Swann home">

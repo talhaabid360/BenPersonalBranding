@@ -1,0 +1,361 @@
+/* ========================================
+   SIGNATURE INTRO — LOADING SCREEN
+======================================== */
+
+.intro-loader {
+  --intro-zoom: 9;
+
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: auto;
+
+  animation:
+    signature-intro-finish
+    0.92s
+    linear
+    2.6s
+    forwards;
+}
+
+/* Black background */
+
+.signature-intro__background {
+  position: absolute;
+  inset: 0;
+  background: #000;
+
+  animation:
+    signature-background-out
+    0.92s
+    ease
+    2.6s
+    forwards;
+}
+
+/* Signature positioning */
+
+.signature-intro__anchor {
+  position: absolute;
+  z-index: 2;
+  top: 49%;
+  left: 50%;
+  width: min(42vw, 410px);
+  transform: translate(-50%, -50%);
+}
+
+/* Forward logo animation */
+
+.signature-intro__logo {
+  width: 100%;
+  transform-origin: center;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+
+  animation:
+    signature-launch
+    0.7s
+    cubic-bezier(0.65, 0.05, 0.9, 0.55)
+    2.6s
+    forwards;
+}
+
+.signature-intro__logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  animation:
+    signature-appear
+    0.5s
+    var(--ease-out)
+    both;
+}
+
+/* Progress bar and tagline */
+
+.signature-intro__details {
+  position: absolute;
+  top: calc(100% + 20px);
+  left: 50%;
+  width: min(42vw, 410px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+
+  transform: translateX(-50%);
+
+  animation:
+    signature-details-out
+    0.2s
+    ease
+    2.6s
+    forwards;
+}
+
+.signature-intro__progress {
+  width: 78%;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.signature-intro__progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+
+  transform: scaleX(0);
+  transform-origin: left center;
+
+  animation:
+    signature-progress
+    2.1s
+    linear
+    0.35s
+    both;
+}
+
+.signature-intro__tagline {
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ========================================
+   INTRO ANIMATION KEYFRAMES
+======================================== */
+
+@keyframes signature-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Fill — pause — complete */
+
+@keyframes signature-progress {
+  0% {
+    transform: scaleX(0);
+    animation-timing-function: ease-out;
+  }
+
+  35% {
+    transform: scaleX(0.45);
+  }
+
+  65% {
+    transform: scaleX(0.45);
+    animation-timing-function: ease-in-out;
+  }
+
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Cinematic forward acceleration */
+
+@keyframes signature-launch {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+
+  20% {
+    transform: translate3d(0, 0, 0) scale(1.08);
+    opacity: 1;
+  }
+
+  48% {
+    transform: translate3d(0, 0, 0) scale(2.2);
+    opacity: 0.9;
+  }
+
+  75% {
+    opacity: 0.35;
+  }
+
+  100% {
+    transform:
+      translate3d(0, 0, 0)
+      scale(var(--intro-zoom));
+
+    opacity: 0;
+  }
+}
+
+/* Reveal background footage */
+
+@keyframes signature-background-out {
+  0%,
+  20% {
+    opacity: 1;
+  }
+
+  65% {
+    opacity: 0.35;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes signature-details-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes signature-intro-finish {
+  from {
+    visibility: visible;
+  }
+
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ========================================
+   SYNCHRONIZED HERO ENTRANCE
+======================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Hide hero text and navigation during intro */
+
+  .site-shell--intro-pending .hero-name,
+  .site-shell--intro-pending .hero-scroll-cue,
+  .site-shell--intro-pending > .site-header,
+  .site-shell--intro-pending > .page-progress {
+    visibility: hidden;
+  }
+
+  /* Reveal main headline after the signature */
+
+  .site-shell--intro-ready .hero-name__main {
+    animation:
+      intro-hero-title
+      0.8s
+      var(--ease-out)
+      0.26s
+      backwards;
+  }
+
+  /* Reveal subtitle */
+
+  .site-shell--intro-ready .hero-kicker {
+    animation:
+      intro-hero-content
+      0.6s
+      var(--ease-out)
+      0.48s
+      backwards;
+  }
+
+  /* Reveal scroll indicator */
+
+  .site-shell--intro-ready .hero-scroll-cue {
+    animation:
+      intro-hero-content
+      0.6s
+      var(--ease-out)
+      0.58s
+      backwards;
+  }
+
+  /* Reveal navigation last */
+
+  .site-shell--intro-ready > .site-header {
+    animation:
+      intro-header-reveal
+      0.6s
+      ease
+      0.58s
+      backwards;
+  }
+}
+
+@keyframes intro-hero-title {
+  from {
+    transform: translate3d(0, 105%, 0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes intro-hero-content {
+  from {
+    transform: translate3d(0, 18px, 0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes intro-header-reveal {
+  from {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  to {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* ========================================
+   MOBILE OPTIMIZATION
+======================================== */
+
+@media (max-width: 699px) {
+  .intro-loader {
+    --intro-zoom: 6;
+  }
+
+  .signature-intro__anchor {
+    width: min(70vw, 410px);
+  }
+
+  .signature-intro__details {
+    width: min(82vw, 410px);
+    gap: 16px;
+  }
+
+  .signature-intro__tagline {
+    font-size: clamp(0.5rem, 2.1vw, 0.65rem);
+    letter-spacing: 0.17em;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-loader {
+    display: none;
+  }
+}
