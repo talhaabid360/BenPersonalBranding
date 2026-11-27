@@ -1662,10 +1662,17 @@ a:focus-visible {
   display: none;
   }
 
-  .press-marquee__track {
+  /* .press-marquee__track {
   animation: mobile-logo-marquee 65s linear infinite;
   will-change: transform;
-  }
+  } */
+
+  .press-marquee__track {
+  width: max-content;
+  gap: 0;
+  animation: mobile-logo-marquee 65s linear infinite;
+  will-change: transform;
+ }
 
   .press-marquee img {
   position: relative;
