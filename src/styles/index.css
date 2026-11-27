@@ -1704,10 +1704,9 @@ a:focus-visible {
   } */
 
   .press-marquee figure {
-  flex: 0 0 230px;
+  flex: 0 0 auto;
   height: 150px;
-  padding: 36px;
-  box-sizing: border-box;
+  padding: 0 24px;
 }
 
   .timeline-section {
